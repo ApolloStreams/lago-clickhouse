@@ -338,3 +338,7 @@ services:
 
   pdf:
     image: getlago/lago-gotenberg:7.8.2
+networks:
+  default:
+    external: true
+    name: lago-network
