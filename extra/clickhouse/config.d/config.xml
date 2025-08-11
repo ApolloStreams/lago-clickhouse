@@ -18,4 +18,29 @@
             <path>/var/lib/clickhouse/access/</path>
         </local_directory>
     </user_directories>
+    
+    <!-- Disable memory profiler to prevent trace_log growth -->
+    <total_memory_profiler_step>0</total_memory_profiler_step>
+    
+    <!-- Configure system tables with TTL to auto-delete old logs -->
+    <trace_log>
+        <database>system</database>
+        <table>trace_log</table>
+        <ttl>event_date + INTERVAL 3 DAY DELETE</ttl>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+    </trace_log>
+    
+    <text_log>
+        <database>system</database>
+        <table>text_log</table>
+        <ttl>event_date + INTERVAL 7 DAY DELETE</ttl>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+    </text_log>
+    
+    <metric_log>
+        <database>system</database>
+        <table>metric_log</table>
+        <ttl>event_date + INTERVAL 7 DAY DELETE</ttl>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+    </metric_log>
 </clickhouse>
